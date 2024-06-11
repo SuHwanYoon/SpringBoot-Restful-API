@@ -30,7 +30,14 @@ public class UserResource {
 	// @PathVariable로 찾을 path 변수이름은 id
 	@GetMapping("/users/{id}")
 	public User retriveOneUsers(@PathVariable int id) {
-		return userDaoService.findOne(id);
+		User user = userDaoService.findOne(id);
+		//userDaoService에서 존재하지않는 id의 User를 조회할경우 
+		if (user == null) {
+			// 존재하지않는 id 메세지를 포함한 커스텀 Exception class를 던진다
+			throw new UserNotFoundException("id:"+id);
+		}
+		
+		return user;
 	}
 
 	// 새로운 User객체를 생성요청하는 컨트롤러 메서드

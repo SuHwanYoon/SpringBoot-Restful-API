@@ -37,8 +37,8 @@ public class UserDaoService {
 	public User findOne(int id) {
 		//1. users List의 필터기준이 되는 filteringOneUser 변수는 User 객체에서 id 취득후 입력된 @PathVariable id 와 비교
 		Predicate<? super User> filteringOneUser = user -> user.getId().equals(id) ;
-		//2. 필터링된 filteringOneUser 변수에서 findFirst로 Optional type의 User를 찾고 get으로 가져온다
-		return users.stream().filter(filteringOneUser).findFirst().get();
+		//2. 필터링된 filteringOneUser 변수에서 findFirst로 Optional type의 User를 착고 존재하지 않을경우 White label Error Page를 방지하기위해 null을 반환
+		return users.stream().filter(filteringOneUser).findFirst().orElse(null);
 	}
 	
 }
