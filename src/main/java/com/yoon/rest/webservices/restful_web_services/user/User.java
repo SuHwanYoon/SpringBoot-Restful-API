@@ -2,10 +2,16 @@ package com.yoon.rest.webservices.restful_web_services.user;
 
 import java.time.LocalDate;
 
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Size;
+
 public class User {
 	
 	private Integer id;
+	@Size(min = 2, message = "at least 2 chracter")
 	private String name;
+	//항상 과거의 날짜만 생성하도록 유효성 검사
+	@Past(message = "Birth Date should be in the past")
 	private LocalDate birthDate;
 	
 	public User(Integer id, String name, LocalDate birthDate) {

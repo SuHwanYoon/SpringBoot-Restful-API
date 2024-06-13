@@ -33,12 +33,20 @@ public class UserDaoService {
 	}
 	
 	
-	//int id 로 하나의 유저를 찾는 메서드
-	public User findOne(int id) {
+	//int id 로 하나의 유저를 찾는 서비스 메서드
+	public User findOneUser(int id) {
 		//1. users List의 필터기준이 되는 filteringOneUser 변수는 User 객체에서 id 취득후 입력된 @PathVariable id 와 비교
 		Predicate<? super User> filteringOneUser = user -> user.getId().equals(id) ;
 		//2. 필터링된 filteringOneUser 변수에서 findFirst로 Optional type의 User를 착고 존재하지 않을경우 White label Error Page를 방지하기위해 null을 반환
 		return users.stream().filter(filteringOneUser).findFirst().orElse(null);
+	}
+
+	//int id 로 하나의 유저를 삭제하는 서비스 메서드
+	public void deleteById(int id) {
+		//1. users List의 필터기준이 되는 filteringOneUser 변수는 User 객체에서 id 취득후 입력된 @PathVariable id 와 비교
+		Predicate<? super User> filteringOneUser = user -> user.getId().equals(id) ;
+		//2. 필터링된 filteringOneUser 변수가 필터링된 predicate조건과 같다면 해당 요소 삭제
+		 users.removeIf(filteringOneUser);
 	}
 	
 }
