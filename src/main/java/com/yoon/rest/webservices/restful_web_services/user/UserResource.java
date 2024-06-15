@@ -1,8 +1,12 @@
 package com.yoon.rest.webservices.restful_web_services.user;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
 import java.net.URI;
 import java.util.List;
 
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,10 +34,13 @@ public class UserResource {
 		return userDaoService.findAll();
 	}
 
+	//http://localhost:8080/users
+	
+	
 	// @PathVariable로 찾을 path 변수이름은 id
 	// 특정 id의 유저를 찾는 메서드
 	@GetMapping("/users/{id}")
-	public User retriveOneUsers(@PathVariable int id) {
+	public EntityModel<User> retriveOneUsers(@PathVariable int id) {
 		User user = userDaoService.findOneUser(id);
 		//userDaoService에서 존재하지않는 id의 User를 조회할경우 
 		if (user == null) {
@@ -41,7 +48,21 @@ public class UserResource {
 			throw new UserNotFoundException("id:"+id);
 		}
 		
-		return user;
+		//특정 id의 유저를 찾을때 모든 유저를 찾는 retriveAllUsers()메서드를 실행하는 링크정보를 제공하기 
+		
+		//EntityModel - 도메인 객체를 래핑하여 링크를 추가하는 객체
+		//User 도메인객체를 EntityModel<User>타입으로 래핑
+		EntityModel<User> entityModel = EntityModel.of(user);
+		
+		//WebMvcLinkBuilder - Spring MVC 컨트롤러를 가리키는 Link 인스턴스를 빌드할수있는 객체
+		//linkTo - 컨트롤러 메서드를 가리키는 WebMvcLinkBuilder를 생성하는 메서드
+		//methodOn - 링크를 생성할 클래스,메서드를 지정하는 메서드 여기서는 UserResource객체의 retriveAllUsers()메서드를 지정
+		WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).retriveAllUsers());
+		//래핑한 EntityModel에 "all-users" 라는 이름으로 제공되는 링크 인스턴스를  추가한다
+		entityModel.add(link.withRel("all-users"));
+		
+		//EntityModel 형태로 반환
+		return entityModel;
 	}
 
 	// @PathVariable로 찾을 path 변수이름은 id

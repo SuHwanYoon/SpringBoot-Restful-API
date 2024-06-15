@@ -8,8 +8,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.method.MethodValidationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -49,12 +47,17 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 //                .stream()
 //                .map(FieldError::getDefaultMessage)
 //                .collect(Collectors.toList());
-
-        List<String> errorMessages = ex.getBindingResult().getFieldErrors()
-                .stream()
-                .map(fieldError -> "Error " + (ex.getBindingResult().getFieldErrors().indexOf(fieldError) + 1) + ": " + fieldError.getDefaultMessage())
-                .collect(Collectors.toList());
 		
+														//@Valid 로 판단된 User객체 Post의 유효성실패 결과를가져오고 유효성 에러를 일으킨 필드리스트를 가져온다
+        List<String> errorMessages = ex.getBindingResult().getFieldErrors()
+        		//스트림전환
+                .stream()
+                //List<FieldError> 요소를 순회하며 함수를 적용하고 List<String>타입으로 변화를 위해 map 메서드 사용,List<FieldError>순회 
+                //첫번째요소 indexOf(fieldError) + 1 = 1, 두번째 요소는 2
+                .map(fieldError -> "Error " + (ex.getBindingResult().getFieldErrors().indexOf(fieldError) + 1) + ": " + fieldError.getDefaultMessage())
+                //Collectors로 List<String>타입으로 전환
+                .collect(Collectors.toList());
+																																// String.join메서드를 사용해 리스트요소들을  "," 구분자로 결합하여 하나의 문자열로 만든다
         String combinedErrorMessage = "Total Error:" + ex.getErrorCount() +" [" + String.join(", ", errorMessages) + "]";
         
         
@@ -62,8 +65,8 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 													combinedErrorMessage , 
 													request.getDescription(false));
 		
-		//요청시간, 요청id메세지,요청URL, 400에러 반환
-		return new ResponseEntity(errorDetails, HttpStatus.BAD_REQUEST);
+		//요청시간, 커스텀한 유효성검사 오류메세지 ,요청URL, 400에러 반환
+		return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
 	}
 
 
