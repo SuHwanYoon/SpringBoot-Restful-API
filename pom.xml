@@ -26,6 +26,16 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		<!-- RestAPI monitoring을 위한 의존성-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<!-- HAL을 이용해서 Restful Hypermidia API 탐색하기 위한 의존성-->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-rest-hal-explorer</artifactId>
+		</dependency>
 		<!-- 유효성검사를 위한 의존성-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

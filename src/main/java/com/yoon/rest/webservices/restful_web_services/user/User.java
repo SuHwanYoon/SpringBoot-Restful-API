@@ -1,23 +1,47 @@
 package com.yoon.rest.webservices.restful_web_services.user;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 
+//H2 DB사용을 위해 엔티티 이름변경
+@Entity(name = "user_details")
 public class User {
 	
+	
+	//Jpa 사용을 위한 엔티티 기본 생성자 - 접근제어자는 protected
+	protected User() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	@Id
+	@GeneratedValue
 	private Integer id;
 	@Size(min = 2, message = "at least 2 chracter")
+	
 	// User 필드의 name 속성대신 user_name을 이름으로 사용
 	@JsonProperty("user_name")
 	private String name;
+	
 	//항상 과거의 날짜만 생성하도록 유효성 검사
 	@Past(message = "Birth Date should be in the past")
 	@JsonProperty("birth_date")
 	private LocalDate birthDate;
+	
+	//사용자는 게시물과 일대다 관계 이며 이를 나타내는 Post 엔티티의 User user필드에 매핑해준다
+	@OneToMany(mappedBy = "user")
+	@JsonIgnore
+	private List<Post> posts;
 	
 	public User(Integer id, String name, LocalDate birthDate) {
 		super();
@@ -48,6 +72,14 @@ public class User {
 
 	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
+	}
+
+	public List<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
 	}
 
 	@Override
