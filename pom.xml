@@ -60,10 +60,29 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
+		<!-- 
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
+		</dependency>
+		-->
+		<!-- SpringBoot 3.1 이상 버전의 MySql종속성-->
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+		</dependency>
+
+		<!-- Spring Boot 3.0 이하시 MySql종속성
+	<dependency>
+		<groupId>mysql</groupId>
+		<artifactId>mysql-connector-java</artifactId>
+	</dependency> 
+								-->
+	<!-- spring-security 종속성-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

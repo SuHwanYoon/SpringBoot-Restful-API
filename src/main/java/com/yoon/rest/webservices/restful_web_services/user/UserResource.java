@@ -1,5 +1,6 @@
 package com.yoon.rest.webservices.restful_web_services.user;
 
+//외부 라이브러리 Spring HATEOAS의 static class인 WebMvcLinkBuilder의 메서드를 쉽게 호출하기위해 경로를 import static 해준다
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 import java.net.URI;
@@ -57,6 +58,7 @@ public class UserResource {
 		//WebMvcLinkBuilder - Spring MVC 컨트롤러를 가리키는 Link 인스턴스를 빌드할수있는 객체
 		//linkTo - 컨트롤러 메서드를 가리키는 WebMvcLinkBuilder를 생성하는 메서드
 		//methodOn - 링크를 생성할 클래스,메서드를 지정하는 메서드 여기서는 UserResource객체의 retriveAllUsers()메서드를 지정
+		//여기서 외부 라이브러리 linkTo() , methodOn() 메서드를 경로없이 사용할수있는것은 위에 경로를 import static을 해두었기 때문
 		WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).retriveAllUsers());
 		//래핑한 EntityModel에 "all-users" 라는 이름으로 제공되는 링크 인스턴스를  추가한다
 		entityModel.add(link.withRel("all-users"));

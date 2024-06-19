@@ -1,3 +1,5 @@
+-- H2DB사용시에 사용할 데이터 파일
+
 -- Hibernate Entity 자동 생성 sql 문은 카멜 표기법을 스네이크 표기법으로 자동으로 바꾼다(birthDate -> birth_date)
 --Hibernate: drop table if exists user_details cascade 
 --Hibernate: drop sequence if exists user_details_seq
